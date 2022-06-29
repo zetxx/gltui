@@ -1,0 +1,9 @@
+{
+    "name": "gltui",
+
+    "dependencies": {
+        "rc": "~1.2.8",
+        "blessed": "~0.1.81",
+        "terminal-kit": "2.4.0"
+    }
+}
