@@ -16,14 +16,10 @@ module.exports = (
         left: 'center',
         top: 'center',
         label: ' Menu ',
-        width: '20%',
+        width: 'shrink',
         height: '20%',
         border: {
-            type: 'line',
-            left: true,
-            top: true,
-            right: false,
-            bottom: false
+            type: 'line'
         },
         align: 'left',
         tags: true,
@@ -45,17 +41,24 @@ module.exports = (
             .map((el) => labels[el])
     });
     menuList.focus();
-    menuList.on('select', function(item, select) {
-        const sel = menu[state.state().flow][select];
-        const flowName = [state.state().flow, menu[state.state().flow][select]].join('.');
+    const destroy = () => {
         menuList.destroy();
         centerList.focus();
         screen.render();
-        console.log(objectId);
+    };
+    menuList.on('select', function(item, select) {
+        const sel = menu[state.state().flow][select];
+        const flowName = [state.state().flow, menu[state.state().flow][select]].join('.');
+        destroy();
         if (!flow[flowName]) {
             throw new Error('flowNotImplemented');
         }
         flow[flowName](objectId, select);
+    });
+    menuList.on('keypress', function(ch, {name, ...key}) {
+        if (name === 'escape') {
+            destroy();
+        }
     });
     screen.render();
 };

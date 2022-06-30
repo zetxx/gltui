@@ -8,6 +8,7 @@ module.exports = (
             state.state().flow = 'context';
             state.state().starredProjects = [];
             state.state().user = {};
+            state.state().project = null;
             state.state().centerData = [
                 ['Context']
             ].concat(conf.contexts.map(({endpoint}, k) => {
@@ -56,9 +57,31 @@ module.exports = (
             subObjectId,
             select
         ) {
+            state.state().project = state
+                .state()[state.state().flow][objectId - 1];
             state.state().flow = 'project.mergeRequests';
+            const mergeRequestsOpen = (await api.mergeRequestsOpen())
+                .filter(({project_id}) => project_id === state.state().project.id);
+            state.state().centerData = [
+                ['Title', 'From > To', 'State']
+            ].concat(
+                mergeRequestsOpen
+                    .map(({
+                        title,
+                        merge_status,
+                        source_branch,
+                        target_branch,
+                        state,
+                        work_in_progress
+                    }) => [
+                        title,
+                        `${source_branch} > ${target_branch}`,
+                        `State: ${state !== "opened" ? "✗" : "✅"}; MR Status: ${merge_status === "cannot_be_merged" ? "✗" : "✅"}; WIP: ${work_in_progress ? "YES" : "NO"}`
+                        // '✅✗❗'
+                    ])
+            );
         }
     };
-    0['starredProjects.mergeRequests'] = o['project.mergeRequests'];
+    o['starredProjects.mergeRequests'] = o['project.mergeRequests'];
     return o;
 };

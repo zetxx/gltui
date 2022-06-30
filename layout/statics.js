@@ -6,7 +6,14 @@ const o = {
         repository: 'Repository',
         issues: 'Issues',
         mergeRequests: 'Merge requests',
-        cicd: 'CI/CD'
+        cicd: 'CI/CD',
+        list: 'List',
+        boards: 'Boards',
+        labels: 'Labels',
+        milestones: 'Milestones',
+        'project.mergeRequests': ': Merge Requests',
+        merge: 'Merge',
+        close: 'Close'
     },
     menu: {
         project: [
@@ -15,6 +22,16 @@ const o = {
             'issues',
             'mergeRequests',
             'cicd'
+        ],
+        'project.issues': [
+            'list',
+            'boards',
+            'labels',
+            'milestones'
+        ],
+        'project.mergeRequests': [
+            'merge',
+            'close'
         ]
     }
 };
